@@ -1,0 +1,38 @@
+import os
+import shutil
+import filetype
+
+carpeta = "archivos"
+if not os.path.exists("archivos/pdf"):
+    os.makedirs("archivos/pdf")
+if not os.path.exists("archivos/imagenes"):
+    os.makedirs("archivos/imagenes")
+if not os.path.exists("archivos/documentos"):
+    os.makedirs("archivos/documentos")
+if not os.path.exists("archivos/otros"):
+    os.makedirs("archivos/otros")
+
+
+for archivo in os.listdir(carpeta):
+   ruta=os.path.join(carpeta, archivo)
+    if os.path.isfile(ruta):
+        kind=filetype.guess(ruta)
+        if kind is None:
+            destino = "archivos/otros/"
+        else:
+            ext=kind.extension
+            if ext == "pdf":
+                destino = "archivos/pdf/"
+
+            elif ext in ["jpg", "png", "jpeg"]:
+                destino = "archivos/imagenes/"
+
+            elif ext in ["docx", "txt"]:
+                destino = "archivos/documentos/"
+
+            else:
+                destino = "archivos/otros/"
+
+        shutil.move(ruta, destino)
+
+print("Archivos organizados por contenido")
